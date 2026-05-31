@@ -9,6 +9,10 @@
 const URL_PLANILHA =
   "https://script.google.com/macros/s/AKfycbzXnB9L9gTs8oWC8aeqHlgJCy8KVoAfkti5c8JCGjuRYxUnbjJsrf5otuuHlf0T3uwP/exec";
 
+// Token compartilhado exigido pelo backend (deve ser IGUAL ao TOKEN do Codigo.gs).
+// Para rotacionar: troque aqui e no Codigo.gs, salve e implante Nova versão.
+const TOKEN = "thlrxemi9sbu2q6n84daofkpcvw705y3";
+
 /**
  * Envia o lead e resolve com o código do brinde gerado pelo servidor.
  * @param {Object} dados - { canal, nome, contato, graduacao, curso, quiz, acertos }
@@ -19,7 +23,7 @@ function enviarLead(dados) {
     const cb = "jsonp_" + Date.now() + "_" + Math.floor(Math.random() * 1e6);
 
     const params = new URLSearchParams(
-      Object.assign({}, dados, { callback: cb })
+      Object.assign({}, dados, { token: TOKEN, callback: cb })
     ).toString();
 
     const script = document.createElement("script");

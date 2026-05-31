@@ -11,81 +11,375 @@
 
 <body class="bg-gray-100 font-sans">
 
-  <div class="max-w-2xl mx-auto min-h-screen bg-white flex flex-col justify-between shadow-lg">
+  <main class="max-w-2xl mx-auto min-h-screen bg-white shadow-lg">
 
-    <!-- TOPO -->
-    <div class="bg-green-700 text-white text-center px-4 py-8 md:py-10">
+    <!-- ============================================================ -->
+    <!-- TELA: HOME — entrada do app (destino do QR). CTA único.       -->
+    <!-- ============================================================ -->
+    <section data-tela="home" class="min-h-screen flex flex-col">
 
-      <!-- LOGO -->
-      <img
-        src="./ASSETS/logo.png"
-        alt="Logo Unigran"
-        class="w-32 md:w-32 mx-auto mb-4"
-      />
+      <!-- TOPO -->
+      <div class="bg-green-700 text-white text-center px-4 py-8 md:py-10">
+        <img src="./ASSETS/logo.png" alt="Logo Unigran" class="w-32 mx-auto mb-4" />
+        <h1 class="text-3xl md:text-4xl font-bold">Festa da Primavera</h1>
+        <p class="mt-3 text-lg md:text-xl">Ajude a Amazônia</p>
+      </div>
 
-      <!-- TITULO -->
-      <h1 class="text-3xl md:text-4xl font-bold">
-         Festa da Primavera
-      </h1>
+      <!-- IMAGEM AMAZÔNIA -->
+      <img src="./ASSETS/amazonia.png" alt="Amazônia" class="w-full h-52 md:h-72 object-cover" />
 
-      <!-- SUBTITULO -->
-      <p class="mt-3 text-lg md:text-xl">
-        Ajude a Amazônia
+      <!-- CTA ÚNICO -->
+      <div class="flex-1 flex flex-col justify-center p-6 md:p-10">
+        <button
+          type="button"
+          data-ir="captura"
+          class="bg-green-700 hover:bg-green-800 active:scale-95 transition-all duration-300
+                 text-white text-2xl md:text-3xl font-bold py-7 rounded-3xl shadow-lg w-full"
+        >
+          Participar e ganhar um brinde
+        </button>
+        <p class="text-center text-gray-500 mt-4 text-sm md:text-base">
+          Leva menos de 1 minuto
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: CAPTURA — nome + telefone (sem validação ainda, Passo 2)-->
+    <!-- ============================================================ -->
+    <section data-tela="captura" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <img src="./ASSETS/logo.png" alt="Logo Unigran" class="w-24 mx-auto mb-6" />
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-8">
+        Antes de começar
+      </h2>
+
+      <form id="formCaptura" class="flex flex-col gap-6 flex-1">
+        <div>
+          <label for="nome" class="block mb-2 font-semibold">Seu nome</label>
+          <input
+            id="nome" name="nome" type="text" autocomplete="name"
+            placeholder="Digite seu nome"
+            class="w-full border rounded-xl p-4 text-lg outline-none focus:ring-4 focus:ring-green-200"
+          />
+        </div>
+
+        <div>
+          <label for="telefone" class="block mb-2 font-semibold">Telefone / WhatsApp</label>
+          <input
+            id="telefone" name="telefone" type="tel" autocomplete="tel"
+            placeholder="+39 331 582 8276"
+            class="w-full border rounded-xl p-4 text-lg outline-none focus:ring-4 focus:ring-green-200"
+          />
+        </div>
+
+        <!-- CONSENTIMENTO LGPD/GDPR — validar texto final com a Unigran/Federica. -->
+        <label class="flex items-start gap-3 bg-gray-50 border rounded-xl p-4 cursor-pointer">
+          <input id="consentimento" type="checkbox" class="mt-1 w-5 h-5 accent-green-700 shrink-0" />
+          <span class="text-sm text-gray-600 leading-relaxed">
+            Autorizo a <strong>Unigran Polo Milão</strong> a usar meu nome e telefone para
+            contato sobre cursos e atividades educacionais. Posso solicitar acesso ou
+            exclusão dos meus dados pelo e-mail
+            <span class="font-medium">milao@unigran.br</span>.
+          </span>
+        </label>
+
+        <p id="erroCaptura" class="text-red-700 font-semibold text-center hidden"></p>
+
+        <button
+          id="btnContinuar" type="button"
+          class="mt-auto bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+                 text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+        >
+          Continuar
+        </button>
+      </form>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: PERFIL — 2ª etapa da Captura (obrigatória).             -->
+    <!-- Container alvo: #perguntasPerfil (renderiza PERFIL).          -->
+    <!-- ============================================================ -->
+    <section data-tela="perfil" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        Sobre seu interesse
+      </h2>
+      <p class="text-center text-gray-500 mb-8">Duas perguntas rápidas</p>
+
+      <div id="perguntasPerfil" class="flex flex-col gap-6 flex-1"></div>
+
+      <p id="erroPerfil" class="text-red-700 font-semibold text-center mt-4 hidden"></p>
+
+      <button
+        id="btnPerfil" type="button"
+        class="mt-6 bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+      >
+        Continuar
+      </button>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: MENU — hub de ações. Cada botão abre uma tela e volta.   -->
+    <!-- ============================================================ -->
+    <section data-tela="menu" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <img src="./ASSETS/logo.png" alt="Logo Unigran" class="w-24 mx-auto mb-6" />
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        Participe e ganhe prêmios
+      </h2>
+      <p class="text-center text-gray-500 mb-8">
+        Escolha uma ou mais opções abaixo. No fim, toque em Concluir.
       </p>
 
-    </div>
+      <div class="flex flex-col gap-4 flex-1">
 
-    <!-- IMAGEM AMAZÔNIA -->
-    <div class="w-full">
+        <button
+          type="button" data-ir="pesquisa" data-menu="pesquisa"
+          class="flex items-center justify-between gap-3 text-left bg-white border-2 border-green-700
+                 hover:bg-green-50 active:scale-[0.98] transition-all text-green-900
+                 text-lg md:text-xl font-bold px-5 py-5 rounded-2xl shadow-sm"
+        >
+          <span>Responda à pesquisa</span>
+          <span data-selo class="hidden text-sm font-semibold text-green-700 whitespace-nowrap">✓ feito</span>
+        </button>
 
-      <img
-        src="./ASSETS/amazonia.png"
-        alt="Amazônia"
-        class="w-full h-52 md:h-72 object-cover"
-      />
+        <button
+          type="button" data-ir="amazonia" data-menu="quiz"
+          class="flex items-center justify-between gap-3 text-left bg-white border-2 border-green-700
+                 hover:bg-green-50 active:scale-[0.98] transition-all text-green-900
+                 text-lg md:text-xl font-bold px-5 py-5 rounded-2xl shadow-sm"
+        >
+          <span>Desafie-se e saiba mais sobre Atalaia</span>
+          <span data-selo class="hidden text-sm font-semibold text-green-700 whitespace-nowrap">✓ feito</span>
+        </button>
 
-    </div>
+        <button
+          type="button" data-ir="doacao" data-menu="doacao"
+          class="flex items-center justify-between gap-3 text-left bg-white border-2 border-red-700
+                 hover:bg-red-50 active:scale-[0.98] transition-all text-red-800
+                 text-lg md:text-xl font-bold px-5 py-5 rounded-2xl shadow-sm"
+        >
+          <span>Doe para Atalaia</span>
+          <span data-selo class="hidden text-sm font-semibold text-red-700 whitespace-nowrap">✓ visto</span>
+        </button>
 
-    <!-- BOTÕES -->
-    <div class="p-5 md:p-8 flex flex-col gap-5">
+      </div>
 
-      
-        <a href="pesquisa.html" class="bg-green-700 hover:bg-green-800 transition-all duration-300  
-          text-white text-xl md:text-2xl font-bold py-5 rounded-2xl shadow-md text-center block">
-          
-              Responder Pesquisa
+      <!-- Lembrete do que há no stand físico -->
+      <div class="bg-green-50 border border-green-200 rounded-2xl p-4 mt-4 text-sm">
+        <p class="font-semibold text-green-900 mb-2">No stand UNIGRAN na Festa da Primavera:</p>
+        <p class="text-green-800 mb-1">📚 Informações personalizadas sobre os cursos</p>
+        <p class="text-green-800">🔔 Desafio “Bateu, respondeu”: desafie um amigo, mostre quem sabe mais e ganhe prêmios!</p>
+      </div>
 
-        </a>
-        
+      <p id="statusConcluir" class="text-center font-semibold mt-4 hidden"></p>
 
-        <a href="doacao.html" class="bg-red-700 hover:bg-red-800 transition-all duration-300   text-white text-xl md:text-2xl font-bold py-5 rounded-2xl shadow-md text-center block">
+      <button
+        id="btnConcluir" type="button"
+        class="mt-6 bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md
+               disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        Concluir
+      </button>
 
-              Fazer Doação 
-        </a>
+    </section>
 
-        <a href="cursos.html" class="bg-blue-700 hover:bg-blue-800 transition-all duration-300 text-white text-xl md:text-2xl font-bold py-5 rounded-2xl shadow-md text-center block">
+    <!-- ============================================================ -->
+    <!-- TELA: PESQUISA — Laboratório Vivo (educação continuada).      -->
+    <!-- Container alvo: #perguntasPesquisa (renderiza PESQUISA).      -->
+    <!-- ============================================================ -->
+    <section data-tela="pesquisa" class="hidden min-h-screen flex-col p-6 md:p-10">
 
-              Conhecer Cursos
-        </a>
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        Pesquisa
+      </h2>
+      <p class="text-center text-gray-500 mb-8">Sua opinião sobre estudar hoje</p>
 
-    </div>
+      <div id="perguntasPesquisa" class="flex flex-col gap-6 flex-1"></div>
 
-    <!-- QR CODE -->
-    <div class="text-center p-6 md:p-10">
+      <!-- Q8 — opt-in para entrevista + contato próprio da pesquisa (opcional).
+           Texto ajustado (sem "anônimo") por manter o vínculo pesquisa↔lead. -->
+      <div class="border rounded-2xl p-4 md:p-5 mt-6">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input id="pesquisaOptin" type="checkbox" class="mt-1 w-5 h-5 accent-green-700 shrink-0" />
+          <span class="text-sm text-gray-600 leading-relaxed">
+            Aceito participar de uma conversa de até 20 minutos nas próximas semanas sobre a
+            pesquisa. Meus dados são tratados com confidencialidade e usados apenas para fins
+            de pesquisa.
+          </span>
+        </label>
+        <input
+          id="pesquisaContato" type="text"
+          placeholder="WhatsApp ou e-mail (opcional)"
+          class="mt-3 w-full border rounded-xl p-3 outline-none focus:ring-4 focus:ring-green-200"
+        />
+      </div>
 
-      <img
-        src="ASSETS/qr-code.png"
-        alt="QR Code"
-        class="w-44 md:w-60 mx-auto"
-      />
+      <p id="erroPesquisa" class="text-red-700 font-semibold text-center mt-4 hidden"></p>
 
-      <p class="mt-4 text-gray-600 text-sm md:text-base">
-        Escaneie para participar
+      <button
+        id="btnPesquisa" type="button"
+        class="mt-6 bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+      >
+        Confirmar e voltar ao menu
+      </button>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: AMAZÔNIA — quiz da Amazônia (vale o brinde).            -->
+    <!-- Container alvo: #perguntasAmazonia (renderiza QUIZ_AMAZONIA). -->
+    <!-- ============================================================ -->
+    <section data-tela="amazonia" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        Desafie-se
+      </h2>
+      <p class="text-center text-gray-500 mb-8">Conheça a comunidade beneficiada</p>
+
+      <div id="perguntasAmazonia" class="flex flex-col gap-6 flex-1"></div>
+
+      <p id="erroAmazonia" class="text-red-700 font-semibold text-center mt-4 hidden"></p>
+
+      <button
+        id="btnFinalizar" type="button"
+        class="mt-6 bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+      >
+        Confirmar respostas
+      </button>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: DOAÇÃO (escolha) — método: IBAN (Itália) ou PIX (Brasil).-->
+    <!-- ============================================================ -->
+    <section data-tela="doacao" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        Doe para Atalaia
+      </h2>
+      <p class="text-center text-gray-500 mb-8">Como prefere doar?</p>
+
+      <div class="flex flex-col gap-4 flex-1">
+        <button
+          type="button" data-ir="doacaoIban"
+          class="text-left bg-white border-2 border-green-700 hover:bg-green-50
+                 active:scale-[0.98] transition-all text-green-900
+                 text-lg md:text-xl font-bold px-5 py-5 rounded-2xl shadow-sm"
+        >
+          🇮🇹 Transferência bancária (IBAN)
+        </button>
+
+        <button
+          type="button" data-ir="doacaoPix"
+          class="text-left bg-white border-2 border-green-700 hover:bg-green-50
+                 active:scale-[0.98] transition-all text-green-900
+                 text-lg md:text-xl font-bold px-5 py-5 rounded-2xl shadow-sm"
+        >
+          🇧🇷 PIX (Brasil)
+        </button>
+      </div>
+
+      <button
+        id="btnVoltarDoacao" type="button"
+        class="mt-6 bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+      >
+        Voltar ao menu
+      </button>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: DOAÇÃO / IBAN — dados bancários com botão Copiar.        -->
+    <!-- Container alvo: #dadosIban. -->
+    <!-- ============================================================ -->
+    <section data-tela="doacaoIban" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        Transferência bancária
+      </h2>
+      <p class="text-center text-gray-500 mb-8">Toque em copiar e use no app do seu banco.</p>
+
+      <div id="dadosIban" class="flex flex-col gap-3 flex-1"></div>
+
+      <button
+        type="button" data-ir="doacao"
+        class="mt-6 bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+      >
+        Voltar
+      </button>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: DOAÇÃO / PIX — copia e cola (essencial) + QR (render JS). -->
+    <!-- Containers: #dadosPix e #pixQr. -->
+    <!-- ============================================================ -->
+    <section data-tela="doacaoPix" class="hidden min-h-screen flex-col p-6 md:p-10">
+
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 text-center mb-2">
+        PIX
+      </h2>
+      <p id="pixInstrucao" class="text-center text-gray-500 mb-8"></p>
+
+      <div id="dadosPix" class="flex flex-col gap-3"></div>
+
+      <div id="pixQrWrap" class="flex flex-col items-center mt-6">
+        <img id="pixQr" alt="QR Code PIX" class="w-48 h-48 object-contain" />
+        <p class="text-sm text-gray-500 mt-2">Escaneie com outro aparelho</p>
+      </div>
+
+      <button
+        type="button" data-ir="doacao"
+        class="mt-auto bg-green-700 hover:bg-green-800 active:scale-95 transition-all
+               text-white text-xl font-bold py-5 rounded-2xl shadow-md"
+      >
+        Voltar
+      </button>
+
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TELA: SUCESSO — ticket AM###/UNI### (ou agradecimento simples). -->
+    <!-- ============================================================ -->
+    <section data-tela="sucesso" class="hidden min-h-screen flex-col justify-center items-center text-center p-6 md:p-10">
+
+      <div class="text-6xl mb-4">🎉</div>
+      <h2 class="text-2xl md:text-3xl font-bold text-green-900 mb-4">Obrigado por participar!</h2>
+
+      <div id="blocoCodigo">
+        <p class="text-gray-600 mb-6">
+          Leve este código ao stand <strong>UNIGRAN na Festa da Primavera</strong> para retirar seu prêmio:
+        </p>
+        <div id="codigo" class="text-5xl md:text-6xl font-extrabold text-green-700 tracking-widest
+                                border-4 border-dashed border-green-300 rounded-2xl px-8 py-6">
+          AM000
+        </div>
+        <p id="brindeInfo" class="text-gray-700 mt-6 max-w-sm mx-auto leading-relaxed"></p>
+      </div>
+
+      <p id="agradecimentoSimples" class="hidden text-gray-600 max-w-sm">
+        Sua participação foi registrada. Passe no stand
+        <strong>UNIGRAN na Festa da Primavera</strong> para conhecer nossos cursos!
       </p>
 
-    </div>
+    </section>
 
-  </div>
+  </main>
 
+  <!-- Camada de dados (dados.js) + acesso ao backend (api.js) + motor (app.js) -->
+  <script src="./JS/dados.js"></script>
+  <script src="./JS/api.js"></script>
+  <script src="./JS/app.js"></script>
 </body>
 </html>
